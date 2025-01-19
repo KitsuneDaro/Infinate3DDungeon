@@ -30,12 +30,12 @@ public class MapDisplay : MonoBehaviour
     
     void DrawFirst(Vector3 playerPosition)
     {
-        BoundsInt bounds = new BoundsInt(Vector3Int.one * -radius, Vector3Int.one * radius);
+        BoundsInt bounds = new BoundsInt(Vector3Int.one * -radius, Vector3Int.one * displaySize);
 
-        Draw(playerPosition, bounds);
+        AddBlocks(playerPosition, bounds);
     }
 
-    void Draw(Vector3 playerPosition, BoundsInt drawingBounds)
+    void AddBlocks(Vector3 playerPosition, BoundsInt drawingBounds)
     {
         Vector3 newPlayerIntPosition = Vector3Utils.Floor(playerPosition);
         Vector3 playerFractionalPosition = Vector3Utils.GetFractionalPart(playerPosition);
@@ -43,20 +43,25 @@ public class MapDisplay : MonoBehaviour
         for (int x = drawingBounds.min.x; x <= drawingBounds.max.x; x++) {
             for (int y = drawingBounds.min.y; y <= drawingBounds.max.y; y++) {
                 for (int z = drawingBounds.min.z; z <= drawingBounds.max.z; z++) {
-                    Vector3 blockPosition = new Vector3(x, y, z);
+                    Vector3 relativeBlockIntPosition = new Vector3(x, y, z);
+                    Vector3 relativeBlockPosition = relativeBlockIntPosition + playerFractionalPosition;
+                    Vector3 blockPosition = relativeBlockIntPosition + newPlayerIntPosition;
+                    Vector3 repeatedBlockPosition = RepeatBlockPosition(blockPosition);
+                    
                     Block block = new Block(
                         blockPosition, 
                         Quaternion.identity,
                         transform
                     );
+                    SetHoldingBlock(repeatedBlockPosition, block);
                     
                     float alpha = 1.0f;
 
-                    if ((blockPosition + playerFractionalPosition).magnitude > radius) {
+                    if (relativeBlockPosition.magnitude > radius) {
                         alpha = 0.0f;
                     } else {
-                        if ((blockPosition + playerFractionalPosition).magnitude > radius - 1) {
-                            alpha = radius - (blockPosition + playerFractionalPosition).magnitude;
+                        if (relativeBlockPosition.magnitude > radius - 1) {
+                            alpha = radius - relativeBlockPosition.magnitude;
                         }
                     }
 
@@ -65,6 +70,37 @@ public class MapDisplay : MonoBehaviour
                     }
                 }
             }
+
+            Debug.Log(drawingBounds.max.x);
         }
+    }
+
+    void DeleteBlocks(Vector3 playerPosition, BoundsInt drawingBounds) {
+        Vector3 newPlayerIntPosition = Vector3Utils.Floor(playerPosition);
+        Vector3 playerFractionalPosition = Vector3Utils.GetFractionalPart(playerPosition);
+
+        for (int x = drawingBounds.min.x; x <= drawingBounds.max.x; x++) {
+            for (int y = drawingBounds.min.y; y <= drawingBounds.max.y; y++) {
+                for (int z = drawingBounds.min.z; z <= drawingBounds.max.z; z++) {
+                    Vector3 relativeBlockIntPosition = new Vector3(x, y, z);
+                    Vector3 blockPosition = relativeBlockIntPosition + newPlayerIntPosition;
+                    Vector3 repeatedBlockPosition = RepeatBlockPosition(blockPosition);
+                    
+                    SetHoldingBlock(repeatedBlockPosition, null);
+                }
+            }
+        }
+    }
+
+    Vector3 RepeatBlockPosition(Vector3 blockPosition) {
+        return Vector3Utils.Repeat(blockPosition, Vector3.one * displaySize);
+    }
+
+    Block GetHoldingBlock(Vector3 repeatedBlockPosition) {
+        return holdingBlockArray[(int)Mathf.Floor(repeatedBlockPosition.x), (int)Mathf.Floor(repeatedBlockPosition.y), (int)Mathf.Floor(repeatedBlockPosition.z)];
+    }
+
+    void SetHoldingBlock(Vector3 repeatedBlockPosition, Block block) {
+        holdingBlockArray[(int)Mathf.Floor(repeatedBlockPosition.x), (int)Mathf.Floor(repeatedBlockPosition.y), (int)Mathf.Floor(repeatedBlockPosition.z)] = block;
     }
 }
