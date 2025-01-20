@@ -18,13 +18,21 @@ public class Block
         );
 
         mesh.transform.localScale = Vector3.one * 1.25f;
-    }
 
-    public void setColor(Color color)
-    {
         MeshRenderer meshRender = mesh.transform.Find("default").GetComponent<MeshRenderer>();
         meshRender.material = new Material(meshRender.material);
         BlendModeUtils.SetBlendMode(meshRender.material, BlendModeUtils.Mode.Fade);
+    }
+
+    public void SetColor(Color color)
+    {
+        MeshRenderer meshRender = mesh.transform.Find("default").GetComponent<MeshRenderer>();
+        
         meshRender.material.color = color;
+    }
+
+    public void DeleteMesh()
+    {
+        GameObject.Destroy(mesh);
     }
 }
