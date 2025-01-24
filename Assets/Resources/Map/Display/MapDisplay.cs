@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class MapDisplay : MonoBehaviour
 {
-    public Player player;
-    public Camera camera;
+    public GameInfo gameInfo;
 
     private const int radius = 5;
     private const int displaySize = 2 * radius + 1;
@@ -15,14 +14,14 @@ public class MapDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DrawFirst(player.transform.position);
+        DrawFirst(gameInfo.player.transform.position);
     }
 
     // Update is called once per frame
     void Update()
     {
-        DrawDelta(player.transform.position);
-        UpdateBlocks(player.transform.position);
+        DrawDelta(gameInfo.player.transform.position);
+        UpdateBlocks(gameInfo.player.transform.position, gameInfo.mainCamera.transform.position);
     }
 
     void DrawDelta(Vector3 playerPosition)
@@ -85,7 +84,7 @@ public class MapDisplay : MonoBehaviour
         AddBlocks(playerPosition, bounds);
     }
 
-    void UpdateBlocks(Vector3 playerPosition)
+    void UpdateBlocks(Vector3 playerPosition, Vector3 mainCameraPosition)
     {
         Vector3 newPlayerIntPosition = Vector3Utils.Floor(playerPosition);
         Vector3 playerFractionalPosition = Vector3Utils.GetFractionalPart(playerPosition);
@@ -103,7 +102,7 @@ public class MapDisplay : MonoBehaviour
                         getAlphaBySphere(relativeBlockPosition, radius),
                         Mathf.Max(
                             getAlphaByPlane(relativeBlockPosition, new Vector3(0.0f, 1.0f, 0.0f), 0.0f),
-                            getAlphaByPlane(relativeBlockPosition, camera.transform.position - playerPosition, 2.0f)
+                            getAlphaByPlane(relativeBlockPosition, mainCameraPosition - playerPosition, 2.0f)
                         )
                     );
 

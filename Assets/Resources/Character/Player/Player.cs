@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : Character
 {
     public int speed = 10;
+    public GameInfo gameInfo;
     
     // Start is called before the first frame update
     void Start()
@@ -19,7 +20,7 @@ public class Player : Character
         float deltaTime = Time.deltaTime;
         
         base.Update();
-
+/*
         if (Input.GetKey(KeyCode.LeftArrow)) {
             pos.x -= speed * deltaTime;
         }
@@ -32,6 +33,8 @@ public class Player : Character
         if (Input.GetKey(KeyCode.UpArrow)) {
             pos.z += speed * deltaTime;
         }
+*/
+        pos += speed * gameInfo.movingDirection.direction * deltaTime;
 
         transform.position = pos;
     }

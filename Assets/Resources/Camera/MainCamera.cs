@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class MainCamera : MonoBehaviour
 {
-    public Player player;
+    public GameInfo gameInfo;
     public Vector3 relativePosition;
+    public float movingDirectionWidth = 2.0f;
+    public float speed = 2.0f;
     
     // Start is called before the first frame update
     void Start()
@@ -16,6 +18,9 @@ public class MainCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = player.transform.position + relativePosition;
+        float deltaTime = Time.deltaTime;
+        
+        Vector3 targetPosition = gameInfo.player.transform.position + gameInfo.movingDirection.direction * movingDirectionWidth;
+        transform.position += speed * (targetPosition - (transform.position - relativePosition)) * deltaTime;
     }
 }
