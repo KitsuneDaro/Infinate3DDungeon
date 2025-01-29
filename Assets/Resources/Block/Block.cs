@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Block
 {
-    private GameObject mesh;
     private static GameObject MeshResource = (GameObject)Resources.Load("Block/Block");
+
+    private GameObject mesh;
     
     // Start is called before the first frame update
     public Block(Vector3 position, Quaternion quaternion, Transform parentTransform)

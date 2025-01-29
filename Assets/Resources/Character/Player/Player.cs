@@ -6,34 +6,41 @@ public class Player : Character
 {
     public int speed = 10;
     public GameInfo gameInfo;
+
+    private MeshManager MeshManager = new MeshManager("Character/Player/");
+    private GameObject mesh;
     
     // Start is called before the first frame update
     void Start()
     {
         base.Start();
+
+        MeshManager.AddMeshResourceByDictionary(
+            new Dictionary<string, string>(){
+                {"Staying", "Staying/player_staying"},
+                {"Running_0", "Running/player_running_0"},
+                {"Running_1", "Running/player_running_1"},
+            }
+        );
+
+        mesh = (GameObject)GameObject.Instantiate(
+            MeshManager.GetMeshResource("Staying"), 
+            new Vector3(0.0f, 0.0f, 0.0f), 
+            Quaternion.identity,
+            transform
+        );
+
+        Debug.Log(MeshManager.GetMeshResource("Staying"));
     }
 
     // Update is called once per frame
     void Update()
     {
+        base.Update();
+
         Vector3 pos = transform.position;
         float deltaTime = Time.deltaTime;
         
-        base.Update();
-/*
-        if (Input.GetKey(KeyCode.LeftArrow)) {
-            pos.x -= speed * deltaTime;
-        }
-        if (Input.GetKey(KeyCode.RightArrow)) {
-            pos.x += speed * deltaTime;
-        }
-        if (Input.GetKey(KeyCode.DownArrow)) {
-            pos.z -= speed * deltaTime;
-        }
-        if (Input.GetKey(KeyCode.UpArrow)) {
-            pos.z += speed * deltaTime;
-        }
-*/
         pos += speed * gameInfo.movingDirection.direction * deltaTime;
 
         transform.position = pos;

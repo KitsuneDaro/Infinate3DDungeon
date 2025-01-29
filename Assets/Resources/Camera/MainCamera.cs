@@ -6,6 +6,8 @@ public class MainCamera : MonoBehaviour
 {
     public GameInfo gameInfo;
     public Vector3 relativePosition;
+    public Vector3 targetPosition;
+    public Vector3 centerPosition;
     public float movingDirectionWidth = 2.0f;
     public float speed = 2.0f;
     
@@ -20,7 +22,20 @@ public class MainCamera : MonoBehaviour
     {
         float deltaTime = Time.deltaTime;
         
-        Vector3 targetPosition = gameInfo.player.transform.position + gameInfo.movingDirection.direction * movingDirectionWidth;
-        transform.position += speed * (targetPosition - (transform.position - relativePosition)) * deltaTime;
+        UpdateTargetPosition();
+        UpdateCenterPosition(deltaTime);
+        UpdatePosition();
+    }
+
+    void UpdateTargetPosition() {
+        targetPosition = gameInfo.player.transform.position + gameInfo.movingDirection.direction * movingDirectionWidth;
+    }
+
+    void UpdateCenterPosition(float deltaTime) {
+        centerPosition += speed * (targetPosition - centerPosition) * deltaTime;
+    }
+
+    void UpdatePosition() {
+        transform.position = centerPosition + relativePosition;
     }
 }

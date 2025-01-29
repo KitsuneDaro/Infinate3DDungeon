@@ -14,14 +14,14 @@ public class MapDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DrawFirst(gameInfo.player.transform.position);
+        DrawFirst(gameInfo.mainCamera.centerPosition);
     }
 
     // Update is called once per frame
     void Update()
     {
-        DrawDelta(gameInfo.player.transform.position);
-        UpdateBlocks(gameInfo.player.transform.position, gameInfo.mainCamera.transform.position);
+        DrawDelta(gameInfo.mainCamera.centerPosition);
+        UpdateBlocks(gameInfo.mainCamera.centerPosition, gameInfo.mainCamera.relativePosition);
     }
 
     void DrawDelta(Vector3 playerPosition)
@@ -102,7 +102,7 @@ public class MapDisplay : MonoBehaviour
                         getAlphaBySphere(relativeBlockPosition, radius),
                         Mathf.Max(
                             getAlphaByPlane(relativeBlockPosition, new Vector3(0.0f, 1.0f, 0.0f), 0.0f),
-                            getAlphaByPlane(relativeBlockPosition, mainCameraPosition - playerPosition, 2.0f)
+                            getAlphaByPlane(relativeBlockPosition, mainCameraPosition, 2.0f)
                         )
                     );
 

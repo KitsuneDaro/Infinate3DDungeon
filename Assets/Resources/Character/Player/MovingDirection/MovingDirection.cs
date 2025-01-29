@@ -18,16 +18,16 @@ public class MovingDirection : MonoBehaviour
         direction = Vector3.zero;
 
         if (Input.GetKey(KeyCode.LeftArrow)) {
-            direction.x -= 1.0f;
-        }
-        if (Input.GetKey(KeyCode.RightArrow)) {
             direction.x += 1.0f;
         }
+        if (Input.GetKey(KeyCode.RightArrow)) {
+            direction.x -= 1.0f;
+        }
         if (Input.GetKey(KeyCode.DownArrow)) {
-            direction.z -= 1.0f;
+            direction.z += 1.0f;
         }
         if (Input.GetKey(KeyCode.UpArrow)) {
-            direction.z += 1.0f;
+            direction.z -= 1.0f;
         }
 
         direction = direction.normalized;
