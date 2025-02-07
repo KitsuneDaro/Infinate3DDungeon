@@ -452,7 +452,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   gameInfo: {fileID: 385265143}
-  mesh: {fileID: 0}
 --- !u!4 &1128195484
 Transform:
   m_ObjectHideFlags: 0

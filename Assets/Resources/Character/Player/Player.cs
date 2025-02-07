@@ -29,8 +29,6 @@ public class Player : Character
             Quaternion.identity,
             transform
         );
-
-        Debug.Log(MeshManager.GetMeshResource("Staying"));
     }
 
     // Update is called once per frame
@@ -44,5 +42,9 @@ public class Player : Character
         pos += speed * gameInfo.movingDirection.direction * deltaTime;
 
         transform.position = pos;
+
+        transform.rotation = Quaternion.FromToRotation(new Vector3(0.0f, 0.0f, 0.5f), gameInfo.movingDirection.direction);
+
+        Debug.Log(transform.rotation);
     }
 }

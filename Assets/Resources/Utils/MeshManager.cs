@@ -15,16 +15,14 @@ public class MeshManager
 
     public void AddMeshResource(string name, string relativePath) {
         string meshResourcePath = Path.Combine(parentPath, relativePath);
-        Debug.Log(meshResourcePath);
-        GameObject meshResource = (GameObject)Resources.Load(meshResourcePath);
         
+        GameObject meshResource = Resources.Load<GameObject>(meshResourcePath);
         meshResourceDictionary.Add(name, meshResource);
     }
 
     public void AddMeshResourceByDictionary(Dictionary<string, string> relativePathDictionary) {
         if (relativePathDictionary != null) {
             foreach (string name in relativePathDictionary.Keys) {
-                Debug.Log(name);
                 AddMeshResource(name, relativePathDictionary[name]);
             }
         }
