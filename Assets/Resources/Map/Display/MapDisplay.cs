@@ -6,7 +6,7 @@ public class MapDisplay : MonoBehaviour
 {
     public GameInfo gameInfo;
 
-    private const int radius = 5;
+    private const int radius = 10;
     private const int displaySize = 2 * radius + 1;
     private Vector3 playerIntPosition;
     private Block[,,] holdingBlockArray = new Block[displaySize, displaySize, displaySize];
@@ -107,7 +107,7 @@ public class MapDisplay : MonoBehaviour
                     );
 
                     if (block != null) {
-                        block.SetColor(new Color(1.0f, 1.0f, 1.0f, alpha));
+                        block.SetColor(alpha);
                     }
                 }
             }

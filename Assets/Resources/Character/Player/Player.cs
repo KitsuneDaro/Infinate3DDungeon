@@ -29,6 +29,8 @@ public class Player : Character
             Quaternion.identity,
             transform
         );
+
+        transform.localScale = Vector3.one * 1.5f;
     }
 
     // Update is called once per frame
