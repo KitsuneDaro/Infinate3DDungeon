@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class Player : Character
 {
-    public int speed = 10;
+    private float runningSpeed = 6.0f;
+    public float runningTime = 0.0f;
+    public int runningCount = 0;
+    public float runningFrameTime = 0.4f;
+    public int runningFrameN = 2;
+    public float rotatingSpeed = 6.0f;
+
+    private Vector3 velocity = new Vector3(0.0f, 0.0f, 0.0f);
+
     public GameInfo gameInfo;
 
     private MeshManager MeshManager = new MeshManager("Character/Player/");
@@ -39,14 +47,64 @@ public class Player : Character
         base.Update();
 
         Vector3 pos = transform.position;
-        float deltaTime = Time.deltaTime;
+                
+        velocity.x -= 0.1f * velocity.x;
+        velocity.z -= 0.1f * velocity.z;
         
-        pos += speed * gameInfo.movingDirection.direction * deltaTime;
+        velocity.y -= 2.0f * 9.8f * Time.deltaTime;
+
+        if (gameInfo.movingDirection.movingFlag) {
+            runningTime += Time.deltaTime;
+
+            velocity.x = runningSpeed * gameInfo.movingDirection.direction.x;
+            velocity.z = runningSpeed * gameInfo.movingDirection.direction.z;
+
+            if (pos.y < 0.0f) {
+                velocity.y = 4.0f;
+
+                runningCount = (runningCount + 1) % runningFrameN;
+
+                Destroy(mesh);
+                mesh = (GameObject)GameObject.Instantiate(
+                    MeshManager.GetMeshResource($"Running_{runningCount}"), 
+                    pos, 
+                    transform.rotation,
+                    transform
+                );
+            }
+
+            transform.rotation = Quaternion.Lerp(
+                transform.rotation, 
+                Quaternion.LookRotation(gameInfo.movingDirection.direction), 
+                rotatingSpeed * Time.deltaTime
+            );
+        } else {
+            if (runningTime > 0.0f) {
+                Destroy(mesh);
+                mesh = (GameObject)GameObject.Instantiate(
+                    MeshManager.GetMeshResource($"Staying"), 
+                    pos, 
+                    transform.rotation,
+                    transform
+                );
+
+                runningTime = 0.0f;
+            }
+        }
+
+        
+        if (pos.y < 0.0f) {
+            pos.y = 0.0f;
+
+            if (velocity.y < 0.0f) {
+                velocity.y = 0.0f;
+            }
+        }
+
+        pos += velocity * Time.deltaTime;
 
         transform.position = pos;
 
-        transform.rotation = Quaternion.FromToRotation(new Vector3(0.0f, 0.0f, 0.5f), gameInfo.movingDirection.direction);
-
-        Debug.Log(transform.rotation);
+        Debug.Log(velocity.y);
     }
 }

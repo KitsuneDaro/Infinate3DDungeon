@@ -101,7 +101,7 @@ public class MapDisplay : MonoBehaviour
                     float alpha = Mathf.Min(
                         getAlphaBySphere(relativeBlockPosition, radius),
                         Mathf.Max(
-                            getAlphaByPlane(relativeBlockPosition, new Vector3(0.0f, 1.0f, 0.0f), 0.0f),
+                            getAlphaByPlane(relativeBlockPosition + new Vector3(0.0f, 0.5f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f), 0.0f),
                             getAlphaByPlane(relativeBlockPosition, mainCameraPosition, 2.0f)
                         )
                     );

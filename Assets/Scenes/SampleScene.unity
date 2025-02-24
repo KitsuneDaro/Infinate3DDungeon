@@ -295,6 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0, z: 0}
+  movingFlag: 0
 --- !u!4 &748615799
 Transform:
   m_ObjectHideFlags: 0
@@ -450,7 +451,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46575d9ef999bd41aba06cb31c036df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  runningTime: 0
+  runningCount: 0
+  runningFrameTime: 0.5
+  runningFrameN: 2
+  rotatingSpeed: 6
   gameInfo: {fileID: 385265143}
 --- !u!4 &1128195484
 Transform:

@@ -5,6 +5,7 @@ using UnityEngine;
 public class MovingDirection : MonoBehaviour
 {
     public Vector3 direction = Vector3.zero;
+    public bool movingFlag = false;
     
     // Start is called before the first frame update
     void Start()
@@ -16,18 +17,23 @@ public class MovingDirection : MonoBehaviour
     void Update()
     {
         direction = Vector3.zero;
+        movingFlag = false;
 
         if (Input.GetKey(KeyCode.LeftArrow)) {
             direction.x += 1.0f;
+            movingFlag = true;
         }
         if (Input.GetKey(KeyCode.RightArrow)) {
             direction.x -= 1.0f;
+            movingFlag = true;
         }
         if (Input.GetKey(KeyCode.DownArrow)) {
             direction.z += 1.0f;
+            movingFlag = true;
         }
         if (Input.GetKey(KeyCode.UpArrow)) {
             direction.z -= 1.0f;
+            movingFlag = true;
         }
 
         direction = direction.normalized;
