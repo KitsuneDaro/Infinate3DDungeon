@@ -420,8 +420,6 @@ MonoBehaviour:
   relativePosition: {x: 0, y: 0, z: 0}
   targetPosition: {x: 0, y: 0, z: 0}
   centerPosition: {x: 0, y: 0, z: 0}
-  movingDirectionWidth: 3
-  speed: 2
 --- !u!1 &1128195482
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,11 +449,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46575d9ef999bd41aba06cb31c036df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runningTime: 0
-  runningCount: 0
-  runningFrameTime: 0.5
-  runningFrameN: 2
-  rotatingSpeed: 6
   gameInfo: {fileID: 385265143}
 --- !u!4 &1128195484
 Transform:

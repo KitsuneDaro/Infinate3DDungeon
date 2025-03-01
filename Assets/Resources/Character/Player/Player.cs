@@ -5,11 +5,12 @@ using UnityEngine;
 public class Player : Character
 {
     private float runningSpeed = 6.0f;
-    public float runningTime = 0.0f;
-    public int runningCount = 0;
-    public float runningFrameTime = 0.4f;
-    public int runningFrameN = 2;
-    public float rotatingSpeed = 6.0f;
+    private float runningTime = 0.0f;
+    private int runningCount = 0;
+    private float runningFrameTime = 0.4f;
+    private int runningFrameN = 2;
+    private float rotatingSpeed = 6.0f;
+    private bool onFloorFlag = true;
 
     private Vector3 velocity = new Vector3(0.0f, 0.0f, 0.0f);
 
@@ -59,7 +60,7 @@ public class Player : Character
             velocity.x = runningSpeed * gameInfo.movingDirection.direction.x;
             velocity.z = runningSpeed * gameInfo.movingDirection.direction.z;
 
-            if (pos.y < 0.0f) {
+            if (isOnFloor()) {
                 velocity.y = 4.0f;
 
                 runningCount = (runningCount + 1) % runningFrameN;
@@ -79,32 +80,42 @@ public class Player : Character
                 rotatingSpeed * Time.deltaTime
             );
         } else {
-            if (runningTime > 0.0f) {
-                Destroy(mesh);
-                mesh = (GameObject)GameObject.Instantiate(
-                    MeshManager.GetMeshResource($"Staying"), 
-                    pos, 
-                    transform.rotation,
-                    transform
-                );
+            if (onFloorFlag) {
+                if (runningTime > 0.0f) {
+                    Destroy(mesh);
+                    mesh = (GameObject)GameObject.Instantiate(
+                        MeshManager.GetMeshResource($"Staying"), 
+                        pos, 
+                        transform.rotation,
+                        transform
+                    );
 
-                runningTime = 0.0f;
+                    runningTime = 0.0f;
+                }
             }
         }
 
-        
-        if (pos.y < 0.0f) {
+        pos += velocity * Time.deltaTime;
+        transform.position = pos;
+
+        if (isOnFloor()) {
             pos.y = 0.0f;
 
             if (velocity.y < 0.0f) {
                 velocity.y = 0.0f;
             }
-        }
 
-        pos += velocity * Time.deltaTime;
+            onFloorFlag = true;
+        } else {
+            onFloorFlag = false;
+        }
 
         transform.position = pos;
 
         Debug.Log(velocity.y);
+    }
+
+    bool isOnFloor() {
+        return transform.position.y <= 0.0f;
     }
 }

@@ -8,8 +8,8 @@ public class MainCamera : MonoBehaviour
     public Vector3 relativePosition;
     public Vector3 targetPosition;
     public Vector3 centerPosition;
-    public float movingDirectionWidth = 2.0f;
-    public float speed = 2.0f;
+    private float movingDirectionWidth = 3.0f;
+    private float speed = 3.0f;
     
     // Start is called before the first frame update
     void Start()
